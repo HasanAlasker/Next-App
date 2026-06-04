@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { User } from "../types/user";
 import UserTable from "./UsersTable";
+import { prisma } from "../lib/prisma";
 
 interface Props {
   searchParams: Promise<{ sortOrder?: string }>;
@@ -9,8 +10,11 @@ interface Props {
 export default async function Users({ searchParams }: Props) {
   const { sortOrder } = await searchParams;
 
-  const res = await fetch("https://jsonplaceholder.typicode.com/users");
-  const users: User[] = await res.json();
+  // const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  const res = await prisma.user.findMany();
+
+  // const users: User[] = await res.json();
+  const users: User[] = res;
 
   return (
     <div>
