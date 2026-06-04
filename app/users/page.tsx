@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { User } from "../types/user";
 import UserTable from "./UsersTable";
 
@@ -13,7 +14,13 @@ export default async function Users({ searchParams }: Props) {
 
   return (
     <div>
-      <UserTable list={users} sortOrder={sortOrder ?? "id"} />
+      <Suspense
+        fallback={
+          <div>loading</div>
+        }
+      >
+        <UserTable list={users} sortOrder={sortOrder ?? "id"} />
+      </Suspense>
     </div>
   );
 }
