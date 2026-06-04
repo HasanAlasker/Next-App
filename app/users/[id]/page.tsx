@@ -14,10 +14,12 @@ export default async function UserId({ params }: Props) {
   return (
     <table className="table table-zebra border-gray-50 border">
       <thead>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>City</th>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>City</th>
+        </tr>
       </thead>
       <tbody>
         <tr>
