@@ -10,19 +10,16 @@ interface Props {
 export default async function Users({ searchParams }: Props) {
   const { sortOrder } = await searchParams;
 
-  // const res = await fetch("https://jsonplaceholder.typicode.com/users");
-  const res = await prisma.user.findMany();
+  const endpoint = "http://localhost:3000/api/users";
+  const res = await fetch(`${endpoint}`);
+  // const res = await prisma.user.findMany();
 
-  // const users: User[] = await res.json();
-  const users: User[] = res;
+  const users: User[] = await res.json();
+  // const users: User[] = res;
 
   return (
     <div>
-      <Suspense
-        fallback={
-          <div>loading</div>
-        }
-      >
+      <Suspense fallback={<div>loading</div>}>
         <UserTable list={users} sortOrder={sortOrder ?? "id"} />
       </Suspense>
     </div>

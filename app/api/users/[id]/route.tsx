@@ -1,35 +1,50 @@
 import { NextRequest, NextResponse } from "next/server";
 import { schema } from "../schema";
+import { prisma } from "@/app/lib/prisma";
 
 interface Props {
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 }
 
 export async function GET(request: NextRequest, { params }: Props) {
   const { id } = await params;
-  return NextResponse.json({ userId: `${id}` });
+  const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+  if (!user)
+    return NextResponse.json({ error: "user not found" }, { status: 404 });
+
+  return NextResponse.json({ user });
 }
 
 export async function PUT(request: NextRequest, { params }: Props) {
   const { id } = await params;
   const body = await request.json();
 
+  const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+
+  if (!user)
+    return NextResponse.json({ error: "user not found" }, { status: 404 });
+
   const validation = schema.safeParse(body);
 
   if (!validation.success)
     return NextResponse.json(validation.error.issues, { status: 400 });
 
-  if (id > 10)
-    return NextResponse.json({ error: "user not found" }, { status: 404 });
+  const updatedUser = await prisma.user.update({
+    where: { id: Number(id) },
+    data: {
+      email: validation.data.email,
+      name: validation.data.name,
+    },
+  });
 
-  return NextResponse.json({ id: id, name: body.name });
+  if (!updatedUser)
+    return NextResponse.json({ error: "user not updated" }, { status: 400 });
+
+  return NextResponse.json({ updatedUser });
 }
 
 export async function DELETE(request: NextRequest, { params }: Props) {
   const { id } = await params;
-
-  if (id > 10)
-    return NextResponse.json({ error: "user not found" }, { status: 404 });
 
   return NextResponse.json({ id: id, msg: "Deleted user" });
 }
