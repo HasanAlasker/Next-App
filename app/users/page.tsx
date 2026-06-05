@@ -13,7 +13,7 @@ export default async function Users({ searchParams }: Props) {
   // const res = await fetch("https://jsonplaceholder.typicode.com/users");
   // const users: User[] = await res.json();
 
-  const users: User[] = await prisma.user.findMany();
+  const users: any[] = await prisma.user.findMany()
 
   return (
     <div>

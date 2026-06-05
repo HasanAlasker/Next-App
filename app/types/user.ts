@@ -1,8 +1,7 @@
 export interface User {
-  id: number;
-  name: string;
-  email:string
-  followers?: number
-  isActive?: boolean
-  createdAt?: Date
+  id: string;
+  name: string | null;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
 }
