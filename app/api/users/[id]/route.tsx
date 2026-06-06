@@ -8,7 +8,7 @@ interface Props {
 
 export async function GET(request: NextRequest, { params }: Props) {
   const { id } = await params;
-  const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+  const user = await prisma.user.findUnique({ where: { id: id } });
   if (!user)
     return NextResponse.json({ error: "user not found" }, { status: 404 });
 
@@ -19,7 +19,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
   const { id } = await params;
   const body = await request.json();
 
-  const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+  const user = await prisma.user.findUnique({ where: { id: id } });
 
   if (!user)
     return NextResponse.json({ error: "user not found" }, { status: 404 });
@@ -30,7 +30,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
     return NextResponse.json(validation.error.issues, { status: 400 });
 
   const updatedUser = await prisma.user.update({
-    where: { id: Number(id) },
+    where: { id: id },
     data: {
       email: validation.data.email,
       name: validation.data.name,
@@ -43,17 +43,17 @@ export async function PUT(request: NextRequest, { params }: Props) {
   return NextResponse.json({ updatedUser });
 }
 
-export async function DELETE(request: NextRequest, { params }: Props) {
-  const { id } = await params;
-  const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+// export async function DELETE(request: NextRequest, { params }: Props) {
+//   const { id } = await params;
+//   const user = await prisma.user.findUnique({ where: { id: id } });
 
-  if (!user)
-    return NextResponse.json({ error: "user not found" }, { status: 404 });
+//   if (!user)
+//     return NextResponse.json({ error: "user not found" }, { status: 404 });
 
-  const deletedUser = await prisma.user.update({
-    where: { id: Number(id) },
-    data: { isActive: !user.isActive },
-  });
+//   const deletedUser = await prisma.user.update({
+//     where: { id: id },
+//     // data: { isActive: !user.isActive },
+//   });
 
-  return NextResponse.json({ deletedUser });
-}
+//   return NextResponse.json({ deletedUser });
+// }

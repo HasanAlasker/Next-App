@@ -51,7 +51,14 @@ export default function UsersTable({ list, sortOrder }: Props) {
         </thead>
         <tbody>
           {sorted?.map((u) => (
-            <UserCard key={u.id} id={u.id} email={u.email} name={u.name} />
+            <UserCard
+              key={u.id}
+              id={u.id}
+              image={u.image}
+              email={u.email}
+              name={u.name}
+              emailVerified={u.emailVerified}
+            />
           ))}
         </tbody>
       </table>
